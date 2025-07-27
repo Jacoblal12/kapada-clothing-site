@@ -1,5 +1,5 @@
 <?php
-$token = '8166337399:AAHw7OqQY7iOryV__dKR2XiW_8Yt0QJ0TvE'; 
+$token = getenv('BOT_TOKEN'); 
 $chat_id = '2134666178';  
 $name = $_POST['name'] ?? 'N/A';
 $product = $_POST['product'] ?? 'N/A';
