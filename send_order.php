@@ -1,5 +1,6 @@
 <?php
-$token = getenv('BOT_TOKEN'); 
+$env = parse_ini_file(__DIR__ . '/.env');
+$token = $env['BOT_TOKEN']; 
 $chat_id = '2134666178';  
 $name = $_POST['name'] ?? 'N/A';
 $product = $_POST['product'] ?? 'N/A';
