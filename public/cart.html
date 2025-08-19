@@ -1,0 +1,113 @@
+<!-- cart.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Kapada - Your Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background: #f9f9f9;
+        }
+
+        .cart {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        button {
+            background: #e91e63;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #c2185b;
+        }
+
+        .clear {
+            display: block;
+            margin: 1rem auto;
+            background: #f44336;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="cart">
+        <h2>🛒 Your Cart</h2>
+        <ul id="cartList"></ul>
+        <button class="clear" onclick="clearCart()">Clear Cart</button>
+    </div>
+
+    <script>
+        function renderCart() {
+            const cartList = document.getElementById("cartList");
+            cartList.innerHTML = "";
+
+            let cart = JSON.parse(localStorage.getItem("kapada-cart")) || [];
+            if (cart.length === 0) {
+                cartList.innerHTML = "<li>Your cart is empty</li>";
+                return;
+            }
+
+            // Count items
+            const counts = {};
+            cart.forEach(item => counts[item] = (counts[item] || 0) + 1);
+
+            // Show each item
+            Object.keys(counts).forEach(item => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+          <span>${item} (x${counts[item]})</span>
+          <button onclick="removeItem('${item}')">Remove</button>
+        `;
+                cartList.appendChild(li);
+            });
+        }
+
+        function removeItem(product) {
+            let cart = JSON.parse(localStorage.getItem("kapada-cart")) || [];
+            const index = cart.indexOf(product); // remove one occurrence
+            if (index > -1) cart.splice(index, 1);
+            localStorage.setItem("kapada-cart", JSON.stringify(cart));
+            renderCart();
+        }
+
+        function clearCart() {
+            localStorage.removeItem("kapada-cart");
+            renderCart();
+        }
+
+        renderCart();
+    </script>
+</body>
+
+</html>
