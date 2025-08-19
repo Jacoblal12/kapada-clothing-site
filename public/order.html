@@ -72,21 +72,20 @@
     }
 
     // --- send order via Google Apps Script relay ---
-    const scriptURL = "https://script.google.com/macros/s/AKfycbz5I_puEM03Mxsiz9Mf86PqiZdfrCfdgklaAV6B9cQuFDbqD-JvKwcpznw0O0_kgbxI/exec"; // paste your deployed script URL here
+    const scriptURL = "https://script.google.com/macros/s/AKfycbz5I_puEM03Mxsiz9Mf86PqiZdfrCfdgklaAV6B9cQuFDbqD-JvKwcpznw0O0_kgbxI/exec"; 
     const SECRET_KEY = "Kapada123!OrderKey"; // same as in GAS script
     const form = document.getElementById("orderForm");
 
     form.addEventListener("submit", e => {
       e.preventDefault();
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData.entries());
 
-      // include secret key
-      data.secret = SECRET_KEY;
+      // Use FormData (what GAS expects)
+      const formData = new FormData(form);
+      formData.append("secret", SECRET_KEY); // add secret
 
       fetch(scriptURL, {
         method: "POST",
-        body: JSON.stringify(data)
+        body: formData
       })
         .then(response => response.text())
         .then(res => {
